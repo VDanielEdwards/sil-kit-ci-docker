@@ -1,13 +1,11 @@
-name: Build and publish ci-ubuntu-18.04 image
+name: Build and publish ci-ubuntu images
 
 on:
   workflow_dispatch:
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: MariusBgm/sil-kit-ci-ubuntu-18.04
 jobs:
-  push_to_registry:
+  ubuntu-18.04:
+    id: ubuntu1804
     name: Push Docker image to ghcr.io registry
     runs-on: ubuntu-latest
     steps:
@@ -19,19 +17,100 @@ jobs:
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          registry: ${{ env.REGISTRY }}
+          registry: "ghcr.io"
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: "ghcr.io/MariusBgm/sil-kit-ci-ubuntu-18.04"
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        uses: docker/build-push-action@v6
         with:
-          context: ./containers/ci-ubuntu-18.04/
-          file: ./containers/ci-ubuntu-18.04/Dockerfile
+          context: ./containers/ci-ubuntu/
+          build-contexts: |
+            utils=./utils/
+          build-args: |
+            UBUNTU_VERSION=18.04
+            GCC_SUFFIX=-8
+            CLANG_SUFFIX=
+          file: ./containers/ci-ubuntu/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  ubuntu-20.04:
+    id: ubuntu2004
+    name: Push Docker image to ghcr.io registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: "ghcr.io"
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: "ghcr.io/MariusBgm/sil-kit-ci-ubuntu-20.04"
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./containers/ci-ubuntu/
+          build-contexts: |
+            utils=./utils/
+          build-args: |
+            UBUNTU_VERSION=20.04
+            GCC_SUFFIX=-9
+            CLANG_SUFFIX=-10
+          file: ./containers/ci-ubuntu/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  ubuntu-22.04:
+    id: ubuntu2204
+    name: Push Docker image to ghcr.io registry
+    runs-on: ubuntu-latest
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: MariusBgm/sil-kit-ci-ubuntu-22.04
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: "ghcr.io"
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: "ghcr.io/MariusBgm/sil-kit-ci-ubuntu-22.04"
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./containers/ci-ubuntu/
+          build-contexts: |
+            utils=./utils/
+          build-args: |
+            UBUNTU_VERSION=22.04
+            GCC_SUFFIX=-11
+            CLANG_SUFFIX=-14
+          file: ./containers/ci-ubuntu/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

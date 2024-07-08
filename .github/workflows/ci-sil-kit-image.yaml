@@ -1,0 +1,91 @@
+name: Test the Sil Kit Docker images
+
+on:
+  pull_request:
+    branch: main
+
+jobs:
+  ubuntu-1804:
+    name: Build and test SIL Kit using the Ubuntu 18.04 image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Build the Ubuntu 18.04 image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./containers/ci-ubuntu/
+          build-contexts: |
+            utils=./utils/
+          build-args: |
+            UBUNTU_VERSION=18.04
+            GCC_SUFFIX=-8
+            CLANG_SUFFIX=
+          file: ./containers/ci-ubuntu/Dockerfile
+          push: false
+          load: true
+          tags: sil-kit-test:latest
+
+      - name: Test the image
+        run: |
+          docker run -itd --name emmy_noether sil-kit-test:latest /bin/bash
+          docker cp ./utils/image_tests.sh emmy_noether:/home/image_tests.sh
+          docker exec -w /home/  emmy_noether sh image_tests.sh 8
+
+  ubuntu-2004:
+    name: Build and test SIL Kit using the Ubuntu 20.04 image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Build the Ubuntu 20.04 image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./containers/ci-ubuntu/
+          build-contexts: |
+            utils=./utils/
+          build-args: |
+            UBUNTU_VERSION=20.04
+            GCC_SUFFIX=-9
+            CLANG_SUFFIX=-10
+          file: ./containers/ci-ubuntu/Dockerfile
+          push: false
+          load: true
+          tags: sil-kit-test:latest
+
+      - name: Test the image
+        run: |
+          docker run -itd --name emmy_noether sil-kit-test:latest /bin/bash
+          docker cp ./utils/image_tests.sh emmy_noether:/home/image_tests.sh
+          docker exec -w /home/  emmy_noether sh image_tests.sh 9
+
+  ubuntu-2204:
+    name: Build and test SIL Kit using the Ubuntu 22.04 image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Build the Ubuntu 20.04 image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./containers/ci-ubuntu/
+          build-contexts: |
+            utils=./utils/
+          build-args: |
+            UBUNTU_VERSION=22.04
+            GCC_SUFFIX=-11
+            CLANG_SUFFIX=-14
+          file: ./containers/ci-ubuntu/Dockerfile
+          push: false
+          load: true
+          tags: sil-kit-test:latest
+
+      - name: Test the image
+        run: |
+          docker run -itd --name emmy_noether sil-kit-test:latest /bin/bash
+          docker cp ./utils/image_tests.sh emmy_noether:/home/image_tests.sh
+          docker exec -w /home/  emmy_noether sh image_tests.sh
+
