@@ -1,7 +1,6 @@
-ARG DOCKERFILE_FROM_IMAGE="ubuntu"
-ARG UBUNTU_VERSION="18.04"
+ARG DOCKERFILE_FROM_IMAGE="ubuntu:18.04"
 
-FROM ${DOCKERFILE_FROM_IMAGE}:${UBUNTU_VERSION}
+FROM ${DOCKERFILE_FROM_IMAGE}
 
 ENV TZ "Europe/Berlin"
 ENV DEBIAN_FRONTEND "noninteractive"
@@ -10,23 +9,17 @@ ENV LANG C.UTF-8
 
 RUN apt-get update
 RUN apt-get install --no-install-recommends --no-install-suggests -y \
-        software-properties-common \
-        ca-certificates
+        software-properties-common
 
-COPY --from=ca *.crt /usr/local/share/ca-certificates
-RUN update-ca-certificates
+RUN add-apt-repository ppa:git-core/ppa
+RUN apt-get update
 
-
+RUN apt-get install --no-install-recommends --no-install-suggests -y \
+        git
 
 # ARG GCC_SUFFIX="-8"
 # ARG CLANG_SUFFIX=""
 #
-# RUN apt-get update
-# RUN apt-get install --no-install-recommends --no-install-suggests -y \
-#         software-properties-common \
-#         ca-certificates
-#
-# RUN add-apt-repository ppa:git-core/ppa
 #
 # RUN apt-get update
 #
