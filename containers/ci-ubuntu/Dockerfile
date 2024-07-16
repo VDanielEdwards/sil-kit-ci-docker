@@ -7,6 +7,11 @@ ENV DEBIAN_FRONTEND "noninteractive"
 ENV LC_ALL C.UTF-8
 ENV LANG C.UTF-8
 
+RUN apt-get update
+RUN apt-get install --no-install-recommends --no-install-suggests -y \
+        software-properties-common \
+        ca-certificates
+
 COPY --from=ca *.crt /usr/local/share/ca-certificates
 RUN update-ca-certificates
 
