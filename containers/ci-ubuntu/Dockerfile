@@ -1,6 +1,7 @@
+ARG DOCKERFILE_FROM_IMAGE="ubuntu"
 ARG UBUNTU_VERSION="18.04"
 
-FROM ubuntu:${UBUNTU_VERSION}
+FROM ${DOCKERFILE_FROM_IMAGE}:${UBUNTU_VERSION}
 
 ENV TZ "Europe/Berlin"
 ENV DEBIAN_FRONTEND "noninteractive"
@@ -14,6 +15,8 @@ RUN apt-get install --no-install-recommends --no-install-suggests -y \
 
 COPY --from=ca *.crt /usr/local/share/ca-certificates
 RUN update-ca-certificates
+
+
 
 # ARG GCC_SUFFIX="-8"
 # ARG CLANG_SUFFIX=""
