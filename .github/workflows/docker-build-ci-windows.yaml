@@ -20,14 +20,16 @@ jobs:
 
       - name: Build Docker Image
         shell: powershell
-        run: docker build -t sil-kit-docker-build:ci-windows-2022 ./containers/ci-windows
+        run: docker build -t ci-windows:2022 ./containers/ci-windows
 
       - name: Push to GitHub Container Registry
         shell: powershell
         run: |
           $GhcrNamespace = "${{ github.actor }}".ToLower()
+          $GhcrImageName = "ghcr.io/${GhcrNamespace}/sil-kit-ci-docker/ci-windows:2022"
+          docker image tag ci-windows:2022 "${GhcrImageName}"
           docker image ls
-          docker push "ghcr.io/${GhcrNamespace}/sil-kit-docker-build:ci-windows-2022"
+          docker push "${GhcrImageName}"
 
       # - name: Build and push Docker image
       #   uses: docker/build-push-action@v6
