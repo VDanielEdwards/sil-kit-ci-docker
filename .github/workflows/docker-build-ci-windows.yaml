@@ -4,10 +4,19 @@ on:
   workflow_dispatch:
 
 jobs:
+
   build:
     name: Build (2022)
     runs-on: windows-2022
+
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
     steps:
+
       - name: Check out the repo
         uses: actions/checkout@v4
 
