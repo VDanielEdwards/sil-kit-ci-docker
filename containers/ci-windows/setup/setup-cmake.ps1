@@ -1,10 +1,9 @@
-Set-Location C:\Setup
+param(
+    [string] $Version = "3.30.0"
+)
 
-# ensure setup and ci directories exist
-$null = New-Item -Path C:/Setup -Name Downloads -ItemType Directory -Force
-$null = New-Item -Path C:/ -Name CI -ItemType Directory -Force
+& C:/Setup/private/prepare-environment.ps1
 
-$Version = "3.30.0"
 $ArchiveName = "cmake-${Version}-windows-x86_64"
 $ArchiveUri = "https://github.com/Kitware/CMake/releases/download/v${Version}/${ArchiveName}.zip"
 
