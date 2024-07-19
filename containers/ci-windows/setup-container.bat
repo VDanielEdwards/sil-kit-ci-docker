@@ -1,9 +1,9 @@
 @REM note: curl is pre-installed in nanoserver container-images
 
-curl -SL --output vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe
+curl -SL --output C:\TEMP\vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe
 IF NOT "%ERRORLEVEL%"=="0" EXIT
 
-START /w vs_buildtools.exe ^
+START /w C:\TEMP\vs_buildtools.exe ^
     --quiet --wait --norestart --nocache ^
     --installPath "%ProgramFiles(x86)%\Microsoft Visual Studio\2022\BuildTools" ^
     --add Microsoft.VisualStudio.Component.VC.v141.x86.x64
