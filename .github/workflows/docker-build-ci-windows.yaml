@@ -11,10 +11,6 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Build Docker Image
-        shell: powershell
-        run: docker build -t sil-kit-docker-build:ci-windows-2022 ./containers/ci-windows
-
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -22,11 +18,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Build Docker Image
+        shell: powershell
+        run: docker build -t sil-kit-docker-build:ci-windows-2022 ./containers/ci-windows
+
       - name: Push to GitHub Container Registry
         shell: powershell
         run: |
-          $GhcrNamespace = "${{ github.repository }}".ToLower()
-          docker push "ghcr.io/${GhcrNamespace}:ci-windows-2022"
+          $GhcrNamespace = "${{ github.actor }}".ToLower()
+          docker image ls
+          docker push "ghcr.io/${GhcrNamespace}/sil-kit-docker-build:ci-windows-2022"
 
       # - name: Build and push Docker image
       #   uses: docker/build-push-action@v6
