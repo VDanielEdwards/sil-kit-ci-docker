@@ -26,7 +26,7 @@ jobs:
         shell: powershell
         run: |
           $GhcrNamespace = "${{ github.actor }}".ToLower()
-          $GhcrImageName = "ghcr.io/${GhcrNamespace}/sil-kit-ci-docker/ci-windows:2022"
+          $GhcrImageName = "ghcr.io/${GhcrNamespace}/sil-kit-ci-docker:ci-windows-2022"
           docker image tag ci-windows:2022 "${GhcrImageName}"
           docker image ls
           docker push "${GhcrImageName}"
