@@ -1,0 +1,40 @@
+name: Build (ci-windows)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build (2022)
+    runs-on: windows-2022
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Build the Docker image
+        run: docker build -t ci-windows:2022 -m 2GB ./containers/ci-windows
+
+      # - name: Download Dependencies
+      #   run: curl -SL --output vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe
+      #   shell: cmd
+
+      # - name: Build the Ubuntu 18.04 image
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     context: ./containers/ci-ubuntu/
+      #     build-contexts: |
+      #       utils=./utils/
+      #     build-args: |
+      #       UBUNTU_VERSION=18.04
+      #       GCC_SUFFIX=-8
+      #       CLANG_SUFFIX=
+      #     file: ./containers/ci-ubuntu/Dockerfile
+      #     push: false
+      #     load: true
+      #     tags: sil-kit-test:latest
+
+      # - name: Test the image
+      #   run: |
+      #     docker run -itd --name emmy_noether sil-kit-test:latest /bin/bash
+      #     docker cp ./utils/image_tests.sh emmy_noether:/home/image_tests.sh
+      #     docker exec -w /home/  emmy_noether sh image_tests.sh 8
