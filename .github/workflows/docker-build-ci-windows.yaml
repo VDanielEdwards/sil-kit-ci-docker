@@ -18,6 +18,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Download Build Tools bootstrapper
+        shell: powershell
+        run: Invoke-WebRequest https://aka.ms/vs/17/release/vs_buildtools.exe -OutFile ./containers/ci-windows/vs_buildtools.exe
+
       - name: Build Docker Image
         shell: powershell
         run: docker build -t sil-kit-ci-windows:2022 ./containers/ci-windows
