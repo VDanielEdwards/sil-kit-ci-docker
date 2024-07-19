@@ -7,7 +7,7 @@ SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPref
 COPY setup/setup-cmake.ps1 C:/Setup/
 RUN C:/Setup/setup-cmake.ps1
 
-COPY setup/setup-build-tools.ps1 C:/Setup/
+COPY setup/setup-build-tools.ps1 setup/vs_buildtools_wrapper.bat C:/Setup/
 RUN C:/Setup/setup-build-tools.ps1
 
 RUN Remove-Item -Recurse -Force C:/Setup
