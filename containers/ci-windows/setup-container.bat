@@ -2,9 +2,9 @@
 
 curl -SL --output vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe
 
-START /w vs_buildtools.exe `
-    --quiet --wait --norestart --nocache `
-    --installPath "%ProgramFiles(x86)%\Microsoft Visual Studio\2022\BuildTools" `
+START /w vs_buildtools.exe ^
+    --quiet --wait --norestart --nocache ^
+    --installPath "%ProgramFiles(x86)%\Microsoft Visual Studio\2022\BuildTools" ^
     --add Microsoft.VisualStudio.Component.VC.v141.x86.x64
 
 IF "%ERRORLEVEL%"=="3010" EXIT 0
