@@ -11,27 +11,25 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Build the Docker image
-        run: docker build -t ci-windows:2022 -m 2GB ./containers/ci-windows
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: "ghcr.io"
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Download Dependencies
-      #   run: curl -SL --output vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe
-      #   shell: cmd
+      - name: Build Docker Image
+        shell: powershell
+        run: docker build -t sil-kit-ci-windows:2022 ./containers/ci-windows
 
-      # - name: Build the Ubuntu 18.04 image
+      # - name: Build and push Docker image
       #   uses: docker/build-push-action@v6
       #   with:
-      #     context: ./containers/ci-ubuntu/
-      #     build-contexts: |
-      #       utils=./utils/
-      #     build-args: |
-      #       UBUNTU_VERSION=18.04
-      #       GCC_SUFFIX=-8
-      #       CLANG_SUFFIX=
-      #     file: ./containers/ci-ubuntu/Dockerfile
-      #     push: false
+      #     context: ./containers/ci-windows/
+      #     file: ./containers/ci-windows/Dockerfile
+      #     push: true
       #     load: true
-      #     tags: sil-kit-test:latest
+      #     tags: sil-kit-ci-windows:2022
 
       # - name: Test the image
       #   run: |
