@@ -3,6 +3,8 @@ FROM ${DOCKERFILE_FROM_IMAGE} AS ci-windows-base
 
 SHELL ["cmd", "/S", "/C"]
 
+RUN curl -SL --output vs_buildtools.exe https://aka.ms/vs/17/release/vs_buildtools.exe
+
 COPY setup-container.bat setup-container.bat
 RUN setup-container.bat
 
