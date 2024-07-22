@@ -48,7 +48,11 @@ $SetupPath = "C:/Setup/Downloads/vs_buildtools.exe"
 
 Invoke-WebRequest -Uri "${SetupUri}" -OutFile "${SetupPath}"
 
-$ComponentsToAdd = @()
+$ComponentsToAdd = @(
+    "Microsoft.VisualStudio.Component.Windows11SDK.22621"
+    # note: the version-specific component is not enough to get the compiler into the path through `VsDevCmd.bat`
+    "Microsoft.VisualStudio.Component.VC.Tools.${VcComponentArch}"
+)
 
 if ("$VcComponentVersion" -eq "v141") {
     $ComponentsToAdd += "Microsoft.VisualStudio.Component.VC.${VcComponentVersion}.${VcComponentArch}"
@@ -56,12 +60,12 @@ if ("$VcComponentVersion" -eq "v141") {
     $ComponentsToAdd += "Microsoft.VisualStudio.Component.VC.${VcComponentVersion}.${VisualStudioVersion}.${VcComponentArch}"
 }
 
-$Args = $ComponentsToAdd | ForEach-Object { "--add" ; $_ }
+$SetupArgs = $ComponentsToAdd | ForEach-Object { "--add" ; $_ }
 
 # run the setup twice with the same arguments
 
-& $Wrapper "${SetupPath}" "${InstallPath}" $Args
-& $Wrapper "${SetupPath}" "${InstallPath}" $Args
+& $Wrapper "${SetupPath}" "${InstallPath}" $SetupArgs
+& $Wrapper "${SetupPath}" "${InstallPath}" $SetupArgs
 
 # capture and persist the environment variables prepared by the VsDevCmd bach file
 
