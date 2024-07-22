@@ -56,7 +56,7 @@ jobs:
         run: |
           $GhcrNamespace = "${{ github.actor }}".ToLower()
           $GhcrImageName = "ghcr.io/${GhcrNamespace}/sil-kit-ci-docker:ci-windows-2022-${{ matrix.arch }}-${{ matrix.toolset }}"
-          docker image tag ci-windows:2022 "${GhcrImageName}"
+          docker image tag "ci-windows:2022-${{ matrix.arch }}-${{ matrix.toolset }}" "${GhcrImageName}"
           docker image ls
           docker push "${GhcrImageName}"
 
