@@ -15,4 +15,4 @@ RUN Remove-Item -Recurse -Force C:/Setup
 
 COPY scripts C:/CI/Scripts
 
-ENTRYPOINT ["powershell", "-Command", ". 'C:\CI\Scripts\entrypoint-prelude.ps1';"]
+ENTRYPOINT ["powershell", "-Command", ". 'C:/CI/Scripts/entrypoint-prelude.ps1'; "]
