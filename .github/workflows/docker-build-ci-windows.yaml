@@ -6,21 +6,7 @@ on:
 jobs:
 
   build:
-    strategy:
-      matrix:
-        arch: [x86, x64, arm, arm64]
-        toolset: [v141, v142, v143]
-        include:
-          - vc_version: v141
-            toolset: v141
-          - vc_version: "14.29"
-            visual_studio_version: "16.11"
-            toolset: v142
-          - vc_version: "14.40"
-            visual_studio_version: "17.10"
-            toolset: v143
-
-    name: Build (2022, ${{ matrix.arch }}, ${{ matrix.toolset }})
+    name: Build (2022)
     runs-on: windows-2022
 
     permissions:
@@ -45,18 +31,15 @@ jobs:
         shell: powershell
         run: >-
           docker build
-          --build-arg "ARCH=${{ matrix.arch }}"
-          --build-arg "VC_VERSION=${{ matrix.vc_version }}"
-          --build-arg "VISUAL_STUDIO_VERSION=${{ matrix.visual_studio_version }}"
-          -t "ci-windows:2022-${{ matrix.arch }}-${{ matrix.toolset }}"
+          -t "sil-kit-ci-docker:ci-windows-2022-x86.x64"
           ./containers/ci-windows
 
       - name: Push to GitHub Container Registry
         shell: powershell
         run: |
           $GhcrNamespace = "${{ github.actor }}".ToLower()
-          $GhcrImageName = "ghcr.io/${GhcrNamespace}/sil-kit-ci-docker:ci-windows-2022-${{ matrix.arch }}-${{ matrix.toolset }}"
-          docker image tag "ci-windows:2022-${{ matrix.arch }}-${{ matrix.toolset }}" "${GhcrImageName}"
+          $GhcrImageName = "ghcr.io/${GhcrNamespace}/sil-kit-ci-docker:ci-windows-2022-x86.x64"
+          docker image tag "sil-kit-ci-docker:ci-windows-2022-x86.x64" "${GhcrImageName}"
           docker image ls
           docker push "${GhcrImageName}"
 
