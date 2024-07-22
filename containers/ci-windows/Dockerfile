@@ -13,6 +13,7 @@ COPY setup C:/Setup/
 RUN C:/Setup/setup-import-certificates.ps1
 RUN C:/Setup/setup-build-tools.ps1
 RUN C:/Setup/setup-cmake.ps1
+RUN C:/Setup/setup-ninja.ps1
 
 RUN Remove-Item -Recurse -Force C:/Setup
 
