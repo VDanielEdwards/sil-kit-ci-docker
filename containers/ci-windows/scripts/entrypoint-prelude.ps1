@@ -21,7 +21,14 @@ function Invoke-VsDevCmd {
     }
 }
 
-$Arch = $env:ARCH
-$VcVersion = $env:VC_VERSION
+if (-not $env:ARCH) {
+    Write-Host "The `ARCH` environment variable MUST be set!"
+    exit 1
+}
 
-Invoke-VsDevCmd -Arch $Arch -VcVersion $VcVersion
+if (-not $env:VC_VERSION) {
+    Write-Host "The `VC_VERSION` environment variable MUST be set!"
+    exit 1
+}
+
+Invoke-VsDevCmd -Arch $env:ARCH -VcVersion $env:VC_VERSION
