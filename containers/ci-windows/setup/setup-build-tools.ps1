@@ -16,7 +16,9 @@ if (-not "$Arch" -in $ValidArchValues) {
     exit 1
 }
 
-if (($VcVersion -ne "v141") -or ($VcVersion -match '^14[.][234][0-9]$')) {
+# note: v141 requires special handling since the setup component is named differently
+
+if (($VcVersion -ne "v141") -and ($VcVersion -notmatch '^14[.][234][0-9]$')) {
     Write-Host "Invalid VC_VERSION=${VcVersion}! Must be either 'v141' or match 14.NM with 2<=N<=4 and 0<=M<=9"
     exit 1
 }
