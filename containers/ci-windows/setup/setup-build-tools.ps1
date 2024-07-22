@@ -87,5 +87,5 @@ function Invoke-VsDevCmd {
 if ("$VcVersion" -eq "v141") {
     Invoke-VsDevCmd -Arch $Arch -VcVersion "14.1"
 } else {
-    Invoke-VsDevCmd -Arch $Arch -VcVersion $VcVersion
+    Invoke-VsDevCmd -Arch $Arch -VcVersion "$($VcVersion.Substring(0, 4))"
 }
