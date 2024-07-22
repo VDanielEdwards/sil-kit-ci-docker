@@ -1,8 +1,6 @@
-param(
-    [string] $Version = "3.30.0"
-)
+. C:/Setup/private/prelude.ps1
 
-& C:/Setup/private/prepare-environment.ps1
+$Version = "3.30.0"
 
 $ArchiveName = "cmake-${Version}-windows-x86_64"
 $ArchiveUri = "https://github.com/Kitware/CMake/releases/download/v${Version}/${ArchiveName}.zip"

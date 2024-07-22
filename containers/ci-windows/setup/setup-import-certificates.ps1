@@ -1,3 +1,4 @@
+. C:/Setup/private/prelude.ps1
 
 Get-ChildItem -Path C:\Setup\certificates\* -Include *.crt -File | Foreach-Object {
     Write-Host "Importing certificate $($_)"

@@ -1,4 +1,4 @@
-. C:/Setup/private/prepare-environment.ps1
+. C:/Setup/private/prelude.ps1
 
 Write-Host "ARCH=${env:ARCH}"
 Write-Host "VC_VERSION=${env:VC_VERSION}"
@@ -25,9 +25,9 @@ if (($VcVersion -ne "v141") -or ($VcVersion -match '^14[.][234][0-9]$')) {
 
 if (($Arch -eq "x86") -or ($Arch -eq "x64")) {
     $VcComponentArch = "x86.x64"
-} else if ($Arch -eq "arm") {
+} elseif ($Arch -eq "arm") {
     $VcComponentArch = "ARM"
-} else if ($Arch -eq "arm64") {
+} elseif ($Arch -eq "arm64") {
     $VcComponentArch = "ARM64"
 } else {
     Write-Host "Invalid ARCH=${Arch}!"
@@ -38,7 +38,7 @@ $VcComponentVersion = $VcVersion
 
 # put together the setup command line
 
-$Wrapper = "C:\Setup\vs_buildtools_wrapper.bat"
+$Wrapper = "C:\Setup\private\vs_buildtools_wrapper.bat"
 $InstallPath = "C:\CI\BuildTools"
 
 $SetupUri = "https://aka.ms/vs/17/release/vs_buildtools.exe"
@@ -48,7 +48,7 @@ Invoke-WebRequest -Uri "${SetupUri}" -OutFile "${SetupPath}"
 
 $ComponentsToAdd = @()
 
-if ("$MsvcVersion" -eq "v141") {
+if ("$VcComponentVersion" -eq "v141") {
     $ComponentsToAdd += "Microsoft.VisualStudio.Component.VC.${VcComponentVersion}.${VcComponentArch}"
 } else {
     $ComponentsToAdd += "Microsoft.VisualStudio.Component.VC.${VcComponentVersion}.${VisualStudioVersion}.${VcComponentArch}"
@@ -82,7 +82,7 @@ function Invoke-VsDevCmd {
     }
 }
 
-if ("$MsvcVersion" -eq "v141") {
+if ("$VcVersion" -eq "v141") {
     Invoke-VsDevCmd -Arch $Arch -VcVersion "14.1"
 } else {
     Invoke-VsDevCmd -Arch $Arch -VcVersion $VcVersion
