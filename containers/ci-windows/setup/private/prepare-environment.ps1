@@ -1,3 +1,6 @@
+$ErrorActionPreference = 'Stop'
+$ProgressPreference = 'Continue'
+$VerbosePreference='SilentlyContinue'
 
 function Add-CIDirectory {
     param(
