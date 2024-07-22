@@ -48,13 +48,11 @@ $SetupPath = "C:/Setup/Downloads/vs_buildtools.exe"
 
 Invoke-WebRequest -Uri "${SetupUri}" -OutFile "${SetupPath}"
 
-$ComponentsToAdd = @(
-    "Microsoft.VisualStudio.Component.Windows11SDK.22621"
-    # note: the version-specific component is not enough to get the compiler into the path through `VsDevCmd.bat`
-    "Microsoft.VisualStudio.Component.VC.Tools.${VcComponentArch}"
-)
+$ComponentsToAdd = @()
 
 if ("$VcComponentVersion" -eq "v141") {
+    # note: the version-specific component is not enough to get the compiler into the path through `VsDevCmd.bat`
+    $ComponentsToAdd += "Microsoft.VisualStudio.Component.VC.Tools.${VcComponentArch}"
     $ComponentsToAdd += "Microsoft.VisualStudio.Component.VC.${VcComponentVersion}.${VcComponentArch}"
 } else {
     $ComponentsToAdd += "Microsoft.VisualStudio.Component.VC.${VcComponentVersion}.${VisualStudioVersion}.${VcComponentArch}"
